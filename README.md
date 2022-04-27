@@ -37,7 +37,7 @@ Create Database : ```php artisan migrate```
   - ```$user = User::find($id_user);```
   - ```$model = Post::find($id_post);```
   - ```$user->viewd($model);``` // user viewd model + 1
-  - ```$user->viewd($model,second_time);``` // limit viewd by second time
+  - ```$user->viewd($model,second_time);``` // limit new view by second time
   - ```$user->viewd_data_all($model);``` // list all viewd model by user
   - ```$user->viewd_data($model);``` // list data viewd lastest (hour day month year) model by user
   - ```$user->viewd_data($model,$string_time);``` // data viewd lastest ($string_time = hour day month year) model by user 
@@ -53,7 +53,7 @@ Create Database : ```php artisan migrate```
   - ```$user->view_token();``` // get token user view time
  
   - ```$model->viewd();``` // model viewd + 1
-  - ```$model->viewd(second_time);``` // limit viewd by second time
+  - ```$model->viewd(second_time);``` // limit new view by second time
   - ```$model->viewd_data_all();``` // list all viewd
   - ```$model->viewd_data();``` // list data viewd lastest (hour day month year)
   - ```$model->viewd_data($string_time);``` // data viewd lastest ($string_time = hour day month year) 

@@ -1,5 +1,5 @@
 # package-viewable
-Install : composer install kennofizet/lookview
+Install : ```composer require kennofizet/lookview```
 
 + model :
   - user : 

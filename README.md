@@ -19,7 +19,7 @@ Create Database : ```php artisan migrate```
        namespace App;
         .............
        use Package\Kennofizet\Lookview\Traits\LookViewAble;
-       class Post extends Authenticatable
+       class Post extends Model
        {
          use LookViewAble;
          ...............

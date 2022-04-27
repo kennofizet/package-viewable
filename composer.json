@@ -1,0 +1,20 @@
+{
+    "name": "kennofizet/lookview",
+    "type": "library",
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Package\\Kennofizet\\Lookview\\": "src/"
+        }
+    },
+    "require": {},
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Package\\Kennofizet\\Lookview\\Providers\\PackageServiceProvider"
+            ],
+            "aliases": {}
+        }
+    }
+}

@@ -1,5 +1,6 @@
 # package-viewable
 Install : ```composer require kennofizet/lookview```
+Create Database : ```php artisan migrate```
 
 + model :
   - user : 

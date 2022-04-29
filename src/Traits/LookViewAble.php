@@ -71,7 +71,13 @@ trait LookViewAble
             ->where('time_view',$time_int)
             ->first();
 
-            return json_decode($post_viewd->total_view);
+            if (!empty($post_viewd)) {
+                return json_decode($post_viewd->total_view);
+            }else{
+                return '';
+            }
+
+            
         }
     }
 

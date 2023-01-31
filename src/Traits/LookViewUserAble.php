@@ -243,15 +243,15 @@ trait LookViewUserAble
         return json_decode($user_token);
     }
 
-    public function viewd($model,$check_time_value= '')
+    public function viewd($model,$check_time_value= '',$value_count=1)
     {
         $this->lookViewTokenUserCheck();
-        $this->addSingleLookViewByUser($model,$check_time_value);
-        $this->addSingleLookView($model,$check_time_value);
+        $this->addSingleLookViewByUser($model,$check_time_value,$value_count);
+        $this->addSingleLookView($model,$check_time_value,$value_count);
         return;
     }
 
-    public function addSingleLookViewByUser($model,$check_time_value)
+    public function addSingleLookViewByUser($model,$check_time_value,$value_count)
     {
         $current = Carbon::now();
         $name_model = (string)get_class($model);
@@ -265,15 +265,15 @@ trait LookViewUserAble
             // time_view 4 = year
             // time_view 5 = total
             // time_current 1 = current
-            $this->hourLookViewByUser($model,$current,$name_model,1,1,$model_id,$user_id);
-            $this->dayLookViewByUser($model,$current,$name_model,2,1,$model_id,$user_id);
-            $this->monthLookViewByUser($model,$current,$name_model,3,1,$model_id,$user_id);
-            $this->yearLookViewByUser($model,$current,$name_model,4,1,$model_id,$user_id);
-            $this->totalLookViewByUser($model,$current,$name_model,5,1,$model_id,$user_id);
+            $this->hourLookViewByUser($model,$current,$name_model,1,1,$model_id,$user_id,$value_count);
+            $this->dayLookViewByUser($model,$current,$name_model,2,1,$model_id,$user_id,$value_count);
+            $this->monthLookViewByUser($model,$current,$name_model,3,1,$model_id,$user_id,$value_count);
+            $this->yearLookViewByUser($model,$current,$name_model,4,1,$model_id,$user_id,$value_count);
+            $this->totalLookViewByUser($model,$current,$name_model,5,1,$model_id,$user_id,$value_count);
         }
     }
 
-    public function addSingleLookView($model,$check_time_value)
+    public function addSingleLookView($model,$check_time_value,$value_count)
     {
         $current = Carbon::now();
         $name_model = (string)get_class($model);
@@ -287,11 +287,11 @@ trait LookViewUserAble
             // time_view 4 = year
             // time_view 5 = total
             // time_current 1 = current
-            $this->hourLookView($model,$current,$name_model,1,1,$model_id);
-            $this->dayLookView($model,$current,$name_model,2,1,$model_id);
-            $this->monthLookView($model,$current,$name_model,3,1,$model_id);
-            $this->yearLookView($model,$current,$name_model,4,1,$model_id);
-            $this->totalLookView($model,$current,$name_model,5,1,$model_id);
+            $this->hourLookView($model,$current,$name_model,1,1,$model_id,$value_count);
+            $this->dayLookView($model,$current,$name_model,2,1,$model_id,$value_count);
+            $this->monthLookView($model,$current,$name_model,3,1,$model_id,$value_count);
+            $this->yearLookView($model,$current,$name_model,4,1,$model_id,$value_count);
+            $this->totalLookView($model,$current,$name_model,5,1,$model_id,$value_count);
         }
     }
 
@@ -378,7 +378,7 @@ trait LookViewUserAble
         return $check_try;
     }
 
-    public function hourLookViewByUser($model,$current,$name_model,$time_view,$time_current,$model_id,$user_id)
+    public function hourLookViewByUser($model,$current,$name_model,$time_view,$time_current,$model_id,$user_id,$value_count)
     {
         // reset per day
         $check = $this->modelCheckFirstCurrentLookViewByUser($model_id,$name_model,$time_current,$time_view);
@@ -407,9 +407,9 @@ trait LookViewUserAble
                 }
 
                 if ($new_time_hour) {
-                    $update_array_time_view[$current->format('H d m Y')] = 1;
+                    $update_array_time_view[$current->format('H d m Y')] = $value_count;
                 }else{
-                    $update_array_time_view[$current->format('H d m Y')] = $update_array_time_view[$current->format('H d m Y')] + 1;
+                    $update_array_time_view[$current->format('H d m Y')] = $update_array_time_view[$current->format('H d m Y')] + $value_count;
                 }
 
                 $json_end = json_encode($update_array_time_view);
@@ -425,7 +425,7 @@ trait LookViewUserAble
         if (!empty($check_ag)) {}else{
             $model_user_view = Utility::lookViewByUserModelString();
             $new_array_time_view = [];
-            $new_array_time_view[$current->format('H d m Y')] = 1;
+            $new_array_time_view[$current->format('H d m Y')] = $value_count;
             $new_total_view = json_encode($new_array_time_view);
             $chart_check = 0;
 
@@ -443,7 +443,7 @@ trait LookViewUserAble
         }
     }
 
-    public function dayLookViewByUser($model,$current,$name_model,$time_view,$time_current,$model_id,$user_id)
+    public function dayLookViewByUser($model,$current,$name_model,$time_view,$time_current,$model_id,$user_id,$value_count)
     {
         // reset per month
         $check = $this->modelCheckFirstCurrentLookViewByUser($model_id,$name_model,$time_current,$time_view);
@@ -472,9 +472,9 @@ trait LookViewUserAble
                 }
 
                 if ($new_time_month) {
-                    $update_array_time_view[$current->format('d m Y')] = 1;
+                    $update_array_time_view[$current->format('d m Y')] = $value_count;
                 }else{
-                    $update_array_time_view[$current->format('d m Y')] = $update_array_time_view[$current->format('d m Y')] + 1;
+                    $update_array_time_view[$current->format('d m Y')] = $update_array_time_view[$current->format('d m Y')] + $value_count;
                 }
 
                 $json_end = json_encode($update_array_time_view);
@@ -490,7 +490,7 @@ trait LookViewUserAble
         if (!empty($check_ag)) {}else{
             $model_user_view = Utility::lookViewByUserModelString();
             $new_array_time_view = [];
-            $new_array_time_view[$current->format('d m Y')] = 1;
+            $new_array_time_view[$current->format('d m Y')] = $value_count;
             $new_total_view = json_encode($new_array_time_view);
             $chart_check = 0;
             $new_view_user = new $model_user_view([
@@ -507,7 +507,7 @@ trait LookViewUserAble
         }
     }
 
-    public function monthLookViewByUser($model,$current,$name_model,$time_view,$time_current,$model_id,$user_id)
+    public function monthLookViewByUser($model,$current,$name_model,$time_view,$time_current,$model_id,$user_id,$value_count)
     {
         // reset per year
         $check = $this->modelCheckFirstCurrentLookViewByUser($model_id,$name_model,$time_current,$time_view);
@@ -536,9 +536,9 @@ trait LookViewUserAble
                 }
 
                 if ($new_time_month) {
-                    $update_array_time_view[$current->format('m Y')] = 1;
+                    $update_array_time_view[$current->format('m Y')] = $value_count;
                 }else{
-                    $update_array_time_view[$current->format('m Y')] = $update_array_time_view[$current->format('m Y')] + 1;
+                    $update_array_time_view[$current->format('m Y')] = $update_array_time_view[$current->format('m Y')] + $value_count;
                 }
 
                 $json_end = json_encode($update_array_time_view);
@@ -554,7 +554,7 @@ trait LookViewUserAble
         if (!empty($check_ag)) {}else{
             $model_user_view = Utility::lookViewByUserModelString();
             $new_array_time_view = [];
-            $new_array_time_view[$current->format('m Y')] = 1;
+            $new_array_time_view[$current->format('m Y')] = $value_count;
             $new_total_view = json_encode($new_array_time_view);
             $chart_check = 0;
             $new_view_user = new $model_user_view([
@@ -571,7 +571,7 @@ trait LookViewUserAble
         }
     }
 
-    public function yearLookViewByUser($model,$current,$name_model,$time_view,$time_current,$model_id,$user_id)
+    public function yearLookViewByUser($model,$current,$name_model,$time_view,$time_current,$model_id,$user_id,$value_count)
     {
         // reset per year
         $check = $this->modelCheckFirstCurrentLookViewByUser($model_id,$name_model,$time_current,$time_view);
@@ -600,9 +600,9 @@ trait LookViewUserAble
                 }
 
                 if ($new_time_month) {
-                    $update_array_time_view[$current->format('Y')] = 1;
+                    $update_array_time_view[$current->format('Y')] = $value_count;
                 }else{
-                    $update_array_time_view[$current->format('Y')] = $update_array_time_view[$current->format('Y')] + 1;
+                    $update_array_time_view[$current->format('Y')] = $update_array_time_view[$current->format('Y')] + $value_count;
                 }
 
                 $json_end = json_encode($update_array_time_view);
@@ -618,7 +618,7 @@ trait LookViewUserAble
         if (!empty($check_ag)) {}else{
             $model_user_view = Utility::lookViewByUserModelString();
             $new_array_time_view = [];
-            $new_array_time_view[$current->format('Y')] = 1;
+            $new_array_time_view[$current->format('Y')] = $value_count;
             $new_total_view = json_encode($new_array_time_view);
             $chart_check = 0;
             $new_view_user = new $model_user_view([
@@ -635,12 +635,12 @@ trait LookViewUserAble
         }
     }
 
-    public function totalLookViewByUser($model,$current,$name_model,$time_view,$time_current,$model_id,$user_id)
+    public function totalLookViewByUser($model,$current,$name_model,$time_view,$time_current,$model_id,$user_id,$value_count)
     {
         // disable reset
         $check = $this->modelCheckFirstCurrentLookViewByUser($model_id,$name_model,$time_current,$time_view);
         if (!empty($check)) {
-            $check->total_view = $check->total_view + 1;
+            $check->total_view = $check->total_view + $value_count;
             $check->update();
         }else{
             $model_user_view = Utility::lookViewByUserModelString();
@@ -663,7 +663,7 @@ trait LookViewUserAble
 
 
 
-    public function hourLookView($model,$current,$name_model,$time_view,$time_current,$model_id)
+    public function hourLookView($model,$current,$name_model,$time_view,$time_current,$model_id,$value_count)
     {
         // reset per day
         $check = $this->modelCheckFirstCurrentLookView($model,$model_id,$name_model,$time_current,$time_view);
@@ -692,9 +692,9 @@ trait LookViewUserAble
                 }
 
                 if ($new_time_hour) {
-                    $update_array_time_view[$current->format('H d m Y')] = 1;
+                    $update_array_time_view[$current->format('H d m Y')] = $value_count;
                 }else{
-                    $update_array_time_view[$current->format('H d m Y')] = $update_array_time_view[$current->format('H d m Y')] + 1;
+                    $update_array_time_view[$current->format('H d m Y')] = $update_array_time_view[$current->format('H d m Y')] + $value_count;
                 }
 
                 $json_end = json_encode($update_array_time_view);
@@ -710,7 +710,7 @@ trait LookViewUserAble
         if (!empty($check_ag)) {}else{
             $model_user_view = Utility::lookViewModelString();
             $new_array_time_view = [];
-            $new_array_time_view[$current->format('H d m Y')] = 1;
+            $new_array_time_view[$current->format('H d m Y')] = $value_count;
             $new_total_view = json_encode($new_array_time_view);
             $chart_check = 0;
             $new_view_user = new $model_user_view([
@@ -726,7 +726,7 @@ trait LookViewUserAble
         }
     }
 
-    public function dayLookView($model,$current,$name_model,$time_view,$time_current,$model_id)
+    public function dayLookView($model,$current,$name_model,$time_view,$time_current,$model_id,$value_count)
     {
         // reset per month
         $check = $this->modelCheckFirstCurrentLookView($model,$model_id,$name_model,$time_current,$time_view);
@@ -755,9 +755,9 @@ trait LookViewUserAble
                 }
 
                 if ($new_time_month) {
-                    $update_array_time_view[$current->format('d m Y')] = 1;
+                    $update_array_time_view[$current->format('d m Y')] = $value_count;
                 }else{
-                    $update_array_time_view[$current->format('d m Y')] = $update_array_time_view[$current->format('d m Y')] + 1;
+                    $update_array_time_view[$current->format('d m Y')] = $update_array_time_view[$current->format('d m Y')] + $value_count;
                 }
 
                 $json_end = json_encode($update_array_time_view);
@@ -773,7 +773,7 @@ trait LookViewUserAble
         if (!empty($check_ag)) {}else{
             $model_user_view = Utility::lookViewModelString();
             $new_array_time_view = [];
-            $new_array_time_view[$current->format('d m Y')] = 1;
+            $new_array_time_view[$current->format('d m Y')] = $value_count;
             $new_total_view = json_encode($new_array_time_view);
             $chart_check = 0;
             $new_view_user = new $model_user_view([
@@ -789,7 +789,7 @@ trait LookViewUserAble
         }
     }
 
-    public function monthLookView($model,$current,$name_model,$time_view,$time_current,$model_id)
+    public function monthLookView($model,$current,$name_model,$time_view,$time_current,$model_id,$value_count)
     {
         // reset per year
         $check = $this->modelCheckFirstCurrentLookView($model,$model_id,$name_model,$time_current,$time_view);
@@ -818,9 +818,9 @@ trait LookViewUserAble
                 }
 
                 if ($new_time_month) {
-                    $update_array_time_view[$current->format('m Y')] = 1;
+                    $update_array_time_view[$current->format('m Y')] = $value_count;
                 }else{
-                    $update_array_time_view[$current->format('m Y')] = $update_array_time_view[$current->format('m Y')] + 1;
+                    $update_array_time_view[$current->format('m Y')] = $update_array_time_view[$current->format('m Y')] + $value_count;
                 }
 
                 $json_end = json_encode($update_array_time_view);
@@ -836,7 +836,7 @@ trait LookViewUserAble
         if (!empty($check_ag)) {}else{
             $model_user_view = Utility::lookViewModelString();
             $new_array_time_view = [];
-            $new_array_time_view[$current->format('m Y')] = 1;
+            $new_array_time_view[$current->format('m Y')] = $value_count;
             $new_total_view = json_encode($new_array_time_view);
             $chart_check = 0;
             $new_view_user = new $model_user_view([
@@ -852,7 +852,7 @@ trait LookViewUserAble
         }
     }
 
-    public function yearLookView($model,$current,$name_model,$time_view,$time_current,$model_id)
+    public function yearLookView($model,$current,$name_model,$time_view,$time_current,$model_id,$value_count)
     {
         // reset per year
         $check = $this->modelCheckFirstCurrentLookView($model,$model_id,$name_model,$time_current,$time_view);
@@ -881,9 +881,9 @@ trait LookViewUserAble
                 }
 
                 if ($new_time_month) {
-                    $update_array_time_view[$current->format('Y')] = 1;
+                    $update_array_time_view[$current->format('Y')] = $value_count;
                 }else{
-                    $update_array_time_view[$current->format('Y')] = $update_array_time_view[$current->format('Y')] + 1;
+                    $update_array_time_view[$current->format('Y')] = $update_array_time_view[$current->format('Y')] + $value_count;
                 }
 
                 $json_end = json_encode($update_array_time_view);
@@ -899,7 +899,7 @@ trait LookViewUserAble
         if (!empty($check_ag)) {}else{
             $model_user_view = Utility::lookViewModelString();
             $new_array_time_view = [];
-            $new_array_time_view[$current->format('Y')] = 1;
+            $new_array_time_view[$current->format('Y')] = $value_count;
             $new_total_view = json_encode($new_array_time_view);
             $chart_check = 0;
             $new_view_user = new $model_user_view([
@@ -915,18 +915,18 @@ trait LookViewUserAble
         }
     }
 
-    public function totalLookView($model,$current,$name_model,$time_view,$time_current,$model_id)
+    public function totalLookView($model,$current,$name_model,$time_view,$time_current,$model_id,$value_count)
     {
         // disable reset
         $check = $this->modelCheckFirstCurrentLookView($model,$model_id,$name_model,$time_current,$time_view);
         if (!empty($check)) {
-            $check->total_view = $check->total_view + 1;
+            $check->total_view = $check->total_view + $value_count;
             $check->update();
         }else{
             $model_user_view = Utility::lookViewModelString();
             $chart_check = 0;
             $new_view_user = new $model_user_view([
-                'total_view' => 1,
+                'total_view' => $value_count,
                 'time_view' => $time_view,
                 'time_current' => $time_current,
                 'time_show' => $current->year,

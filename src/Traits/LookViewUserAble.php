@@ -646,7 +646,7 @@ trait LookViewUserAble
             $model_user_view = Utility::lookViewByUserModelString();
             $chart_check = 0;
             $new_view_user = new $model_user_view([
-                'total_view' => 1,
+                'total_view' => $value_count,
                 'time_view' => $time_view,
                 'time_current' => $time_current,
                 'time_show' => $current->year,
